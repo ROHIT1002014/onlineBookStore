@@ -1,0 +1,30 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Distribution / packaging
+.Python
+env/
+build/
+
+# dotenv
+.env
+
+# virtualenv
+.venv
+venv/
+ENV/
+.vscode/*
+.history
+
+.DS_Store
+*.sqlite3
+*.pyc
+*.db
+*.pid
+**/migrations/[0-9]**
+.idea/
+
+# pipenv
+Pipfile
+Pipfile.lock
