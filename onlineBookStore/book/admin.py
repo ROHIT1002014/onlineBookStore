@@ -1,3 +1,7 @@
+from book.models import Book
 from django.contrib import admin
 
-# Register your models here.
+class HomeBook(admin.ModelAdmin):
+    list_display = ('name', 'author','price', 'edition', 'isbn', 'timestamp')
+
+admin.site.register(Book, HomeBook)

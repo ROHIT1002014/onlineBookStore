@@ -37,6 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # local apps
+    'book',
+    'order',
+    'user',
+
+    # 3rd party app
+    'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -99,6 +108,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -110,6 +124,74 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[%(asctime)s] %(levelname)s [%(module)s:%(funcName)s:'
+                      '%(lineno)s %(processName)s %(process)d] %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(module)s:%(funcName)s:%(lineno)s::'
+                      '%(message)s'
+        },
+    },
+    'filters': {
+    },
+    'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'filters': []
+        }
+    },
+    'loggers': {
+        '': {
+            'handlers': ['mail_admins', 'console'],
+            'level': 'DEBUG',
+        },
+        'django': {
+            'handlers': ['mail_admins', 'console'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'django.request': {
+            'handlers': ['mail_admins', 'console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'django.db.backends': {
+            'handlers': ['mail_admins', 'console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'amqp': {
+            'handlers': ['mail_admins', 'console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        'auth': {
+            'handlers': ['mail_admins', 'console'],
+            'level': 'DEBUG',
+        }
+    }
+}
 
 
 # Static files (CSS, JavaScript, Images)
