@@ -40,8 +40,8 @@ class BookViewSet(viewsets.ViewSet, PaginationHandlerMixin):
         filtered_data = self.filter_queryset(self.get_queryset())
         results = self.paginate_queryset(filtered_data)
         serializer = BookSerializer(results, many=True)
-        q = Book.objects.annotate(Count('author'))
-        logger.info('aggregation example : ', q[0].author__count)
+        # q = Book.objects.annotate(Count('author'))
+        # logger.info('aggregation example : ', q[0].author__count)
         response = {
             'success': True,
             'data': serializer.data,
@@ -54,10 +54,13 @@ class BookViewSet(viewsets.ViewSet, PaginationHandlerMixin):
             logger.info(f'Input Data: {request.data}.')
             serializer = BookSerializer(data=request.data)
             if serializer.is_valid():
-                print(f"Validated Data name: {request.data.get('name')}.")
+                logger.info(f"Validated Data name: {request.data.get('name')}.")
                 serializer.save()
                 return Response(
                     serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                logger.error(serializer.errors)
+                return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def retrieve(self, request, pk=None):
         queryset = Book.objects.all()

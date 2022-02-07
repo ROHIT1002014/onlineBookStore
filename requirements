@@ -4,3 +4,4 @@ django-filter
 django-restful-admin
 flake8
 pycodestyle
+faker
