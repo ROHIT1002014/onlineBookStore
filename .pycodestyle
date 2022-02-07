@@ -1,0 +1,7 @@
+[pycodestyle]
+statistics = True
+exclude =
+    .git,
+    __pycache__,
+    public,
+    onlineBookStore/settings.py

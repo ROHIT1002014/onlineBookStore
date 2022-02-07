@@ -13,6 +13,7 @@ from django.db.models import Count
 
 logger = logging.getLogger(__name__)
 
+
 class BookViewSet(viewsets.ViewSet, PaginationHandlerMixin):
     """
     This class contain book crud operation implementation with help of viewset.
@@ -55,7 +56,8 @@ class BookViewSet(viewsets.ViewSet, PaginationHandlerMixin):
             if serializer.is_valid():
                 print(f"Validated Data name: {request.data.get('name')}.")
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(
+                    serializer.data, status=status.HTTP_201_CREATED)
 
     def retrieve(self, request, pk=None):
         queryset = Book.objects.all()
@@ -63,29 +65,27 @@ class BookViewSet(viewsets.ViewSet, PaginationHandlerMixin):
             book = get_object_or_404(queryset, pk=pk)
             serializer = BookSerializer(book)
             response = {
-            'success': True,
-            'data': serializer.data,
-            'message': "fetch book list",
-            }
+                'success': True,
+                'data': serializer.data, 'message': "fetch book list"}
             return Response(response, status=status.HTTP_200_OK)
 
     def update(self, request, pk=None, *args, **kwargs):
         logger.info(f'Input Data: {request.data}.')
         if pk is not None:
-          queryset = Book.objects.all()
-          book = get_object_or_404(queryset, pk=pk)
-          serializer = BookSerializer(book, data=request.data)
-          if serializer.is_valid():
-              logger.info(f'Validated Data name: {book.name}.')
-              serializer.save()
-              return Response(serializer.data)
-          return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+            queryset = Book.objects.all()
+            book = get_object_or_404(queryset, pk=pk)
+            serializer = BookSerializer(book, data=request.data)
+            if serializer.is_valid():
+                logger.info(f'Validated Data name: {book.name}.')
+                serializer.save()
+                return Response(serializer.data)
+            return Response(
+                serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         queryset = Book.objects.all()
         if pk is not None:
-          book = get_object_or_404(queryset, pk=pk)
-          logger.info(f'Book: {book.name}.')
-          book.delete()
-          return Response(status=status.HTTP_204_NO_CONTENT)
+            book = get_object_or_404(queryset, pk=pk)
+            logger.info(f'Book: {book.name}.')
+            book.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)

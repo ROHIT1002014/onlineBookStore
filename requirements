@@ -3,3 +3,4 @@ djangorestframework==3.12.4
 django-filter
 django-restful-admin
 flake8
+pycodestyle

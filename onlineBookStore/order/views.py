@@ -11,6 +11,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 logger = logging.getLogger(__name__)
 
+
 class OrderViewSet(viewsets.ViewSet, PaginationHandlerMixin):
     """
     This class contain order crud operation implementation with help of viewset.
@@ -19,9 +20,7 @@ class OrderViewSet(viewsets.ViewSet, PaginationHandlerMixin):
     serializer = OrderSerializer
     filter_backends = (DjangoFilterBackend,)
     pagination_class = CustomPagination
-    filterset_fields = (
-        'user', 'book',
-        'date', 'status',)
+    filterset_fields = ('user', 'book', 'date', 'status',)
 
     def filter_queryset(self, queryset):
         filter_backends = (DjangoFilterBackend, )
@@ -53,7 +52,8 @@ class OrderViewSet(viewsets.ViewSet, PaginationHandlerMixin):
             if serializer.is_valid():
                 print(f"Validated Data name: {request.data.get('name')}.")
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(
+                    serializer.data, status=status.HTTP_201_CREATED)
 
     def retrieve(self, request, pk=None):
         queryset = Order.objects.all()
@@ -61,27 +61,26 @@ class OrderViewSet(viewsets.ViewSet, PaginationHandlerMixin):
             book = get_object_or_404(queryset, pk=pk)
             serializer = OrderSerializer(book)
             response = {
-            'success': True,
-            'data': serializer.data,
-            'message': "fetch order list",
-            }
+                'success': True, 'data': serializer.data,
+                'message': "fetch order list"}
             return Response(response, status=status.HTTP_200_OK)
 
     def update(self, request, pk=None, *args, **kwargs):
         logger.info(f'Input Data: {request.data}.')
         if pk is not None:
-          queryset = Order.objects.all()
-          order = get_object_or_404(queryset, pk=pk)
-          serializer = OrderSerializer(order, data=request.data)
-          if serializer.is_valid():
-              serializer.save()
-              return Response(serializer.data)
-          return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            queryset = Order.objects.all()
+            order = get_object_or_404(queryset, pk=pk)
+            serializer = OrderSerializer(order, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(
+                serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         queryset = Order.objects.all()
         if pk is not None:
-          order = get_object_or_404(queryset, pk=pk)
-          logger.info(f'Order: {order.name}.')
-          order.delete()
-          return Response(status=status.HTTP_204_NO_CONTENT)
+            order = get_object_or_404(queryset, pk=pk)
+            logger.info(f'Order: {order.name}.')
+            order.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)

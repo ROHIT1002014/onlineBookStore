@@ -1,5 +1,5 @@
-from django.urls import path, include
 from order.views import OrderViewSet
+from django.urls import path, include
 from rest_framework import routers
 
 

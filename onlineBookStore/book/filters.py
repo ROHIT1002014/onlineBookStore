@@ -5,6 +5,7 @@ from django_filters.rest_framework import FilterSet
 
 logger = logging.getLogger(__name__)
 
+
 class BookFilter(FilterSet):
     class Meta:
         model = Book
